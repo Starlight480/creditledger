@@ -12,6 +12,10 @@ class Settings(BaseSettings):
     ENVIRONMENT: str = "development"
     DEBUG: bool = True
 
+    @property
+    def is_production(self) -> bool:
+        return self.ENVIRONMENT == "production"
+
     # CORS
     CORS_ORIGINS: list[str] = ["http://localhost:3000", "http://localhost:8000"]
 
@@ -24,18 +28,13 @@ class Settings(BaseSettings):
     DATABASE_URL: str = "sqlite:///./creditledger.db"
 
     # Redis
-    REDIS_URL: str = "redis://localhost:6379/0"
-
-    def is_production(self) -> bool:
-        return self.ENVIRONMENT == "production"
-
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
+    REDIS_URL: str = "redis://localhost:6379"
 
 
 @lru_cache()
 def get_settings() -> Settings:
     return Settings()
 
+
 settings = get_settings()
+
