@@ -52,7 +52,7 @@ def send_reminders(self):
         ).all()
 
         sent = 0
-        for credit, debtor in debtor_credits:
+        for credit, debtor in credits:
             if debtor.phone:
                 # In production, call whatsapp_client.send_message here
                 log = ReminderLog(

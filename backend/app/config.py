@@ -1,11 +1,9 @@
 """
-Application configuration — loads from environment variables.
-All secrets come from env vars in production. Defaults are for local dev only.
+Application configuration - loads from environment variables.
 """
 
 from pydantic_settings import BaseSettings
 from functools import lru_cache
-from typing import List
 
 
 class Settings(BaseSettings):
@@ -14,16 +12,20 @@ class Settings(BaseSettings):
     ENVIRONMENT: str = "development"
     DEBUG: bool = True
 
+    # CORS
+    CORS_ORIGINS: list[str] = ["http://localhost:3000", "http://localhost:8000"]
+
     # Security
     SECRET_KEY: str = "change-me-in-production-minimum-32-chars-long"
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 10080  # 7 days
-    REFRESH_TOKEN_EXPIRE_MINUTES: int = 43200  # 30 days
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 10080
+    REFRESH_TOKEN_EXPIRE_MINUTES: int = 43200
 
     # Database
     DATABASE_URL: str = "sqlite:///./creditledger.db"
 
     # Redis
-    REDIS_URL: str = "redis://localhost:***@property
+    REDIS_URL: str = "redis://localhost:6379/0"
+
     def is_production(self) -> bool:
         return self.ENVIRONMENT == "production"
 
@@ -35,6 +37,5 @@ class Settings(BaseSettings):
 @lru_cache()
 def get_settings() -> Settings:
     return Settings()
-
 
 settings = get_settings()
